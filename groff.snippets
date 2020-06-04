@@ -1,0 +1,31 @@
+snippet mvh "Skapar bästa hälningar" b
+Bästa hälsningar
+--Magnus Sörensen
+endsnippet
+
+snippet mvh2 "Skapar bästa hälningar" b
+Bästa hälsningar
+--Magnus Sörensen
+tel: 070 415 68 05
+Email: byteofsoren@gmail.com
+endsnippet
+
+snippet enum "Creates a enumerated list"
+.nr step 1 1
+.IP \n[step] 3
+$1
+.IP \n+[step]
+$2
+endsnippet
+
+snippet item "Creats a itemiced list"
+.IP \[bu] 2
+$1
+.IP \[bu]
+$2
+endsnippet
+
+snippet (rag|ragged):(left) "Inserts a indented display" br
+.DS I ${1:10}c
+${VISUAL}
+.DE
