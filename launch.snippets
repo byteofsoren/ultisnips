@@ -1,0 +1,112 @@
+global !p
+def complete(t, opts):
+	# if t:
+	opts= [ m[len(t):] for m in opts if m.startswith(t) ]
+	if len(opts) == 1:
+		return opts[0]
+	return "(" + "|".join(opts) + ")"
+endglobal
+
+priority 100
+snippet "arg" "Input argument block" b
+<arg name="$1" $2`!p snip.rv=complete(t[2],['default','value'])`="$3" $4 />
+endsnippet
+
+priority 99
+snippet "arg" "Add values to argument block"
+$1`!p snip.rv = complete(t[1], ['default','value','doc'])`="$2" $3
+endsnippet
+
+snippet xml "Creats <xml ..>" b
+<?xml version="1.0"?>
+endsnippet
+
+snippet "(la|launch)" "Create a launch block" br
+<launch>
+	<!-- Add <arg ...>'s -->
+	<!-- Add <param >'s -->
+	<!-- Add <node >'s -->
+	$1
+</launch>
+endsnippet
+
+# type="$2`!p snip.rv=complete(t[2] ,['revolute','continuous','prismatic','fixed','floating','planar'])`"
+
+snippet node "Spawn ros Nodes" b
+<node name="${1:name}" pkg="${2:package}" type="${3:listener.py}" $4 />
+endsnippet
+
+snippet "node:(block|bl)" "Spawn ros Nodes" br
+<node name="${1:name}" pkg="${2:package}" type="${3:listener.py}" $4 />
+	$5
+</node>
+endsnippet
+
+snippet "node:(att|attributes)" "Node attributes" wr
+$1`!p snip.rv = complete(t[1], ['args','machine','respawn','respawn_delay','required','ns','clear_params','output','cwd','launch-prefix'])`="$2" $3
+endsnippet
+
+snippet par "Params for Node"
+<param name="$1" $2 />
+endsnippet
+
+snippet "(xac|xacro):(urdf|convert|conv)" "xacro to urdf" r
+<!-- Parsing xacro and loading robot_description parameter -->
+<param name="robot_description" command="$(find xacro)/xacro --inorder
+$(find ${1:pkg_name})/urdf/${2:filename}.xacro " />
+endsnippet
+
+snippet par_att "Spawn ros Nodes" w
+$1`!p snip.rv = complete(t[1], ['value','type','textfile','binfile','command'])`="$2" $3
+endsnippet
+#$1`!p snip.rv = complete(t[1], ['','','',''])`="$2" $3
+
+
+snippet rospar "ROS parameter" b
+<rosparam command="$1`!p snip.rv = complete(t[1], ['load','dump','delete'])`" $2 />
+endsnippet
+snippet "rospar:(att|attribute)" "ROS parameter attrib" wr
+$1`!p snip.rv = complete(t[1], ['file','param','ns','subst_value'])`="$2" $3
+endsnippet
+
+
+snippet "(inc|include)" "Import other launch files" br
+<include file="$1" $2 />
+endsnippet
+
+snippet "(inc|include):(bl|block)" "Create a <include> block" br
+<include file="$1" $2 >
+	$3
+<include>
+endsnippet
+
+snippet "inc:(att|attrib)" "Include attributes" wr
+#$1`!p snip.rv = complete(t[1], ['ns','clear_params','pass_all_args'])`="$2" $3
+endsnippet
+
+# cat ../pacage.xml | grep -e "<[\s\/]*name[\S]*> | sed -r 's/<[\S\/]*name[\S]*>//g'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,87 @@
+global !p
+def complete(t, opts):
+	# if t:
+	opts= [ m[len(t):] for m in opts if m.startswith(t) ]
+	if len(opts) == 1:
+		return opts[0]
+	return "(" + "|".join(opts) + ")"
+endglobal
+
+snippet robot "Creates a robot description" b
+<robot name="$1">
+	<!-- Add <link> and Add <joint> to describe the robot -->
+	$2
+</robot>
+endsnippet
+
+snippet link "Creates a link inside a robot" b
+<link name="$1">
+	$2
+</link>
+endsnippet
+
+snippet visual "Creats a visual tag inside a link" b
+	<visual>
+		<geometry>
+			<!-- Add visual geometry -->
+			$3
+		</geometry>
+		<origin rpy="${1:0 0 0}" xyz="${2:0 0 0}"/>
+		<material name="yellow">
+			<color rgba="1 1 0 1"/>
+		</material>
+	</visual>
+endsnippet
+snippet col "Creates a <collision> inside a link"
+<collision>
+<!-- Add <geometry>, <orgin> and <inertia> -->
+	<geometry>
+		<!-- Add collision geometry -->
+		$10
+	</geometry>
+	<origin rpy="${1:0 0 0}" xyz="${2:0 0 0}"/>
+	<inertial>
+		<mass value="${3:1}"/>
+		<inertia ixx="${4:1.0}" ixy="${5:0.0}" ixz="${6:0.0}" iyy="${7:1.0}" iyz="${8:0.0}" izz="${9:1.0}"/>
+	</inertial>
+</collision>
+endsnippet
+
+snippet safe_controll "Creats a safty controlelr inside a joint" b
+<safety_controller k_velocity="${1:30}" k_position="${2:15}" soft_lower_limit="${3:-2.0}" soft_upper_limit="${4:0.5}" />
+endsnippet
+
+snippet dyn "Cretase dynamics tag inside joint" b
+<dynamics damping="${1:0.0}" friction="${2:0.0}"/>
+endsnippet
+
+snippet calibration "Calibration inside joint" b
+<calibration rising="${1:0.0}"/>
+endsnippet
+snippet limit "A joint limit" b
+<limit effort="${1:30}" velocity="${2:1.0}" lower="${3:-2.2}" upper="${4:0.7}" />
+endsnippet
+
+snippet joint "Creates a joint inside a robot" b
+<joint name="${1:name}" type="$2`!p snip.rv=complete(t[2] ,['revolute','continuous','prismatic','fixed','floating','planar'])`">
+	<parent link="$3"/>
+	<child link="$4"/>
+	<origin xyz="${5:0 0 0}"/>
+	<axis xyz="${6:0 0 0}" />
+	<calibration rising="0.0"/>
+	<dynamics damping="0.0" friction="0.0"/>
+	<limit effort="30" velocity="1.0" lower="-2.2" upper="0.7" />
+	<safety_controller k_velocity="10" k_position="15" soft_lower_limit="-2.0" soft_upper_limit="0.5" />
+</joint>
+endsnippet
+
+snippet cyl "Cylinder used insede <geometry>"
+<cylinder length="$1" radius="$2"/>
+endsnippet
+
+snippet box "Box used inside <geometry>"
+<box size="${1:1 1 1}"/>
+endsnippet
+
+
+

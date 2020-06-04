@@ -1,0 +1,157 @@
+
+global !p
+def complete(t, opts):
+	# if t:
+	opts= [ m[len(t):] for m in opts if m.startswith(t) ]
+	if len(opts) == 1:
+		return opts[0]
+	return "(" + "|".join(opts) + ")"
+endglobal
+
+# snippet args "Add values to argument block" !b
+# $1`!p snip.rv = complete(t[1], ['default','value','doc'])`="$2" $3
+# endsnippet
+
+
+snippet xml "Insert the <?xml..?> tag" b
+<?xml version="1.0" encoding="UTF-8"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="${1:name_space}">
+$2
+endsnippet
+
+snippet "(xac|xacro):init" "Insert the <?xml..?> tag" rb
+<?xml version="1.0" encoding="UTF-8"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="${1:name_space}">
+$2
+endsnippet
+
+snippet "(xac|xacro):if" "<xacro:if>" rb
+<xacro:if value="${1:<expression>}">
+	$2
+</xacro:if>
+endsnippet
+
+snippet "block" "Simple tag" b
+<${1:tag}>
+	${2:${VISUAL}}
+</${1/([\w:._-]+).*/$1/}>
+endsnippet
+snippet "row" "Simple tag" b
+<${1:tag}> ${2:${VISUAL}} </${1/([\w:._-]+).*/$1/}>
+endsnippet
+
+snippet type "<type> name &</type>"
+<type> $1</type>
+endsnippet
+
+
+snippet "(xac|xacro):(un|unless)" "<xacro:unless >" rb
+<xacro:unless value="${1:<expression>}">
+	$2
+</xacro:unless >
+endsnippet
+
+snippet "(xac|xacro):(prop|property)" "<xacro:property ../>" rb
+<xacro:property name="${1:var}" value="${2:useit}"/>
+endsnippet
+
+snippet "(xac|xacro):(inc|include)" "<xacro:include file ../>" rb
+<xacro:include filename="$(find ${1:pkg_dir})/urdf/${2:path}.urdf.xacro"/>
+endsnippet
+
+snippet "(xac|xacro):arg" "<xacro:arg ../>" r
+<xacro:arg name="${1:myvar}" default="${2:false}"/>
+endsnippet
+
+snippet "(xac|xacro):insert" "<xacro:insert_block../>" r
+<xacro:insert_block name="${1:<block_name>}" />
+endsnippet
+
+snippet "(xac|xacro):param" "<xacro:parm../>" r
+<param name="${1:robot_description}" command="$(find xacro)/xacro.py $(arg model) myvar:=true" />
+endsnippet
+
+
+snippet "(xac|xacro):macro" "<xacro:macro ..>" r
+<xacro:macro name="${1:name}" params="$2" >
+	$3
+</xacro:macro>
+endsnippet
+
+snippet "(mat|matrix):(inert|inertia)" "inertia matrix" br
+<inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="0.5" iyz="0.0" izz="1.0" />
+endsnippet
+
+
+snippet "(xac|xacro):block" "creats the <...> block" r
+<$1`!p snip.rv = complete(t[1], ['inertial','container'])`>
+	$2
+</$1`!p snip.rv = complete(t[1], ['inertial','container'])`>
+endsnippet
+
+snippet joint "Creatse a joint" b
+<joint name="${1:caster}_${suffix}_joint">
+	<axis xyz="${2:0 0 1}" />
+</joint>
+endsnippet
+
+
+snippet "(mac|macro):(exec|run|use)" "<xarco:macro_name ..>" br
+<xacro:$1 $2="$3">
+	$4
+</xacro:$1 >
+endsnippet
+
+snippet "row(mac|macro):(exec|run|use)" "<xarco:macro_name ..>" br
+<xacro:$1 $2="$3" />
+endsnippet
+
+snippet "(mac|macro):(var|variable)" "Creates a <var value= />" rb
+<$1 value = "${$1}" />
+endsnippet
+
+snippet "(mac|macro):(trans)" "description"
+<xacro:macro name="transmission_block" params="joint_name">
+	<transmission name="tran1">
+		<type>transmission_interface/SimpleTransmission</type>
+		<joint name="${joint_name}">
+			<hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+		</joint>
+		<actuator name="motor1">
+			<mechanicalReduction>1</mechanicalReduction>
+		</actuator>
+	</transmission>
+</xacro:macro>
+endsnippet
+
+snippet "shape:(cyl|cylinder)" "description" rb
+<cylinder length="${${1:pan_link}_length}" radius="${${2:pan_link}_radius}"/>
+endsnippet
+
+snippet "shape:box" "description" b
+<!-- Fix :UltisnipsEdit -->
+<cylinder length="${${1:pan_link}_length}" radius="${${2:pan_link}_radius}"/>
+endsnippet
+snippet "shape:(shp|sphere)" "description" rb
+<!-- Fix :UltisnipsEdit -->
+<cylinder length="${${1:pan_link}_length}" radius="${${2:pan_link}_radius}"/>
+endsnippet
+snippet "shape:(cyl|cylinder)" "description" rb
+<!-- Fix :UltisnipsEdit -->
+<cylinder length="${${1:pan_link}_length}" radius="${${2:pan_link}_radius}"/>
+endsnippet
+snippet "shape:mesh" "description" b
+<!-- Fix :UltisnipsEdit -->
+<cylinder length="${${1:pan_link}_length}" radius="${${2:pan_link}_radius}"/>
+endsnippet
+
+
+
+snippet "gazebo:(cont|control)" "description" rb
+<!-- ros_control plugin -->
+<gazebo>
+	<plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+		<robotNamespace>/seven_dof_arm</robotNamespace>
+	</plugin>
+</gazebo>
+endsnippet
