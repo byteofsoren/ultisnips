@@ -1,3 +1,24 @@
-snippet docstring "create doc string for function"
+snippet docstr "create doc string for function" b
 """ $1 """
+endsnippet
+
+snippet fstr "create fstring python3.6"
+f"$1"
+endsnippet
+
+snippet vstr "create fstring for variabel printing  python3.6" i
+f"$1=\{$1\}"
+endsnippet
+
+snippet logsetup "Initial setup for loging module" b
+# == Logging basic setup ===
+import logging
+log = logging.getLogger(__name__)
+f_log = logging.FileHandler("${1:filename}.log")
+f_log.setLevel(logging.INFO)
+f_logformat = logging.Formatter("%(name)s:%(levelname)s:%(lineno)s-> %(message)s")
+f_log.setFormatter(f_logformat)
+log.addHandler(f_log)
+log.setLevel(logging.INFO)
+# == END ===
 endsnippet
