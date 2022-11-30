@@ -1,0 +1,76 @@
+snippet mycls "Simple Class defenition" b
+class $1 \{
+	private:
+		int m_$1;
+	public:
+		$1($2)\{
+		\}
+\};
+endsnippet
+
+snippet my5cls "Description" b
+class $1
+\{
+public:
+	$1(const char* s = "")
+	\{
+	\}
+
+	~$1()
+	\{
+	\}
+
+	$1(const $1& other) // copy constructor
+	\{\}
+
+	$1($1&& other) noexcept // move constructor
+	\{\}
+
+	$1& operator=(const $1& other) // copy assignment
+	\{
+		return *this = $1(other);
+	\}
+
+	$1& operator=($1&& other) noexcept // move assignment
+	\{
+		//std::swap(cstring, other.cstring);
+		return *this;
+	\}
+
+// alternatively, replace both assignment operators with
+//  $1& operator=($1 other) noexcept
+//  \{
+//      std::swap(cstring, other.cstring);
+//      return *this;
+//  \}
+\};
+endsnippet
+
+snippet mysingle "Creatse a singleton class" b
+class $1 \{
+	private:
+		static $1 * instance;
+		$1()\{
+		\}
+	public:
+		static $1 * getInstance()\{
+			if(!instance)\{
+				instance = new $1;
+			\}
+			return instance;
+		\}
+\};
+endsnippet
+
+snippet myfun "Simple c type function declaration" b
+void ${1:name}(){
+	$2;
+}
+
+endsnippet
+
+snippet forit "For iterator" b
+for(auto $1: $2)\{
+	$3
+\}
+endsnippet
